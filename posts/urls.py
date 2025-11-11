@@ -1,10 +1,11 @@
 from rest_framework.routers import DefaultRouter
-from .views import PostViewSet, CategoryViewSet, TagViewSet
+from .views import PostViewSet, CategoryViewSet, TagViewSet,CommentViewSet
 
 
 router = DefaultRouter()
 router.register(r'posts',PostViewSet, basename='post')
-router.register(r'category',CategoryViewSet, basename='category' )
-router.register(r'tag',TagViewSet, basename='tag')
+router.register(r'categories',CategoryViewSet, basename='category' )
+router.register(r'tags',TagViewSet, basename='tag')
+router.register(r'comments', CommentViewSet, basename='comment')
 
 urlpatterns = router.urls
