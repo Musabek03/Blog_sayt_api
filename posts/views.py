@@ -1,5 +1,5 @@
-from .models import Post,Category,Tag,Comment
-from .serializers import PostSerializer,CategorySerializer, TagSerializer,CommentSerializer
+from .models import Post,Category,Tag,Comment,User
+from .serializers import PostSerializer,CategorySerializer, TagSerializer,CommentSerializer,UserSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly 
 from rest_framework import permissions
@@ -19,7 +19,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
-    permission_classes = [IsAdminOrCreateOnlyOrReadOnly]
+    pagination_class = None
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -30,4 +30,11 @@ class TagViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = [IsAuthorOrReadOnly]
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
+
+    

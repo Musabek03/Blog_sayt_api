@@ -42,20 +42,20 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
-    author_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='author', write_only=True)
+    # author_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='author', write_only=True)
   
     category = CategorySerializer(read_only=True)
     category_id = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), source='category', write_only=True)
 
     tag = TagSerializer(many=True, read_only=True)
-    tag_id = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), source='tag', write_only=True, many=True)
+    tag_ids = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), source='tag', write_only=True, many=True)
 
     comments = CommentSerializer(many=True, read_only=True)
 
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'content', 'category', 'category_id', 'tag', 'tag_id',  'author','author_id', 'comments','created_at']
+        fields = ['id', 'title', 'content', 'category', 'category_id', 'tag', 'tag_ids',  'author','author_id', 'comments','created_at']
     
 
     
