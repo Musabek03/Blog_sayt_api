@@ -21,11 +21,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
-    author_id = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all(), 
-        source='author', 
-        write_only=True
-    )
+    post = serializers.PrimaryKeyRelatedField(read_only = True)
 
     post_id = serializers.PrimaryKeyRelatedField(
         queryset=Post.objects.all(),
@@ -35,14 +31,13 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ['id', 'post', 'author','author_id', 'text', 'post_id', 'created_at']
+        fields = fields = ('id', 'text', 'author', 'post', 'post_id', 'created_at')
 
 
 
 
 class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
-    # author_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='author', write_only=True)
   
     category = CategorySerializer(read_only=True)
     category_id = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), source='category', write_only=True)
@@ -50,21 +45,8 @@ class PostSerializer(serializers.ModelSerializer):
     tag = TagSerializer(many=True, read_only=True)
     tag_ids = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), source='tag', write_only=True, many=True)
 
-    comments = CommentSerializer(many=True, read_only=True)
-
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'content', 'category', 'category_id', 'tag', 'tag_ids',  'author','author_id', 'comments','created_at']
+        fields = ('id', 'title', 'content', 'author', 'category', 'category_id', 'tag', 'tag_ids', 'created_at')
     
-
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        request = self.context.get('request', None)
-        view = self.context.get('view', None)
-
-        if request and view and getattr(view, 'action', None) == 'list':
-            self.fields.pop('content', None)
-            self.fields.pop('comments',None)
