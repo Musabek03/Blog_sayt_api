@@ -10,14 +10,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 @extend_schema(tags=['Posts'])
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.select_related('author', 'category').prefetch_related('tag').all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthorOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['category__name']
     search_fields = ['title', 'content']
-    
-
 
     def perform_create(self, serializer):
         serializer.save(author = self.request.user)
@@ -54,7 +52,7 @@ class TagViewSet(viewsets.ModelViewSet):
 
 @extend_schema(tags=['Comments'])
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.select_related('author').all()
     serializer_class = CommentSerializer
     permission_classes = [IsAuthorOrReadOnly]
 

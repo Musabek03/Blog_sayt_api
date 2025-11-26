@@ -40,13 +40,14 @@ class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
   
     category = CategorySerializer(read_only=True)
-    category_id = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), source='category', write_only=True)
+    category_id = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), source='category', write_only=True, required=False, allow_null=True )
 
     tag = TagSerializer(many=True, read_only=True)
-    tag_ids = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), source='tag', write_only=True, many=True)
+    tag_ids = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), source='tag', write_only=True, many=True, required=False )
 
 
     class Meta:
         model = Post
         fields = ('id', 'title', 'content', 'author', 'category', 'category_id', 'tag', 'tag_ids', 'created_at')
+        read_only_fields = ['author']
     
