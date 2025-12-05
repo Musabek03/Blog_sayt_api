@@ -22,8 +22,7 @@ COPY . .
 
 COPY .env /app/.env
 
-RUN python manage.py migrate
-RUN pip install gunicorn
+
 
 # 6. Iske túsiriw buyrıǵı
 # Serverde runserver EMES, Gunicorn isletiw kerek
