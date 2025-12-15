@@ -9,4 +9,6 @@ staticfiles/
 .idea
 .env
 
+esap.py
+
 media/
