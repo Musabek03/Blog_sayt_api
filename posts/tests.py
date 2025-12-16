@@ -36,7 +36,6 @@ class PostApiTests(APITestCase):
         
     def test_create_post_authenticated(self):
         """Autentifikaciyadan ótken paydalanıwshı jańa post jarata alıwın tekseriw."""
-        # Test ushın sistemaǵa kirgizemiz
         self.client.force_authenticate(user=self.user)
 
         data = {'title': 'Jańa post', 'content': 'Jańa mazmun'}
@@ -44,7 +43,8 @@ class PostApiTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Post.objects.count(), 2)
-        self.assertEqual(Post.objects.first().title, 'Jańa post')
+        new_post = Post.objects.order_by('id').last() 
+        self.assertEqual(new_post.title, 'Jańa post')
 
     def test_create_post_unauthenticated(self):
         """Autentifikaciyadan ótpegen paydalanıwshı post jarata almawın tekseriw."""
